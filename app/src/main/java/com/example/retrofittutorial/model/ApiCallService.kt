@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiCallService {
-    private val BASE_URL = "https://us-central1-apis2-e78c3.cloudfunctions.net/"
+    private val BASE_URL = "https://swapi.dev/api/"
 
     private val api = Retrofit.Builder()
         .baseUrl(BASE_URL)
