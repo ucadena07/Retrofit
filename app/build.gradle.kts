@@ -42,6 +42,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
@@ -88,6 +89,9 @@ dependencies {
     //Retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.2.0")
+
+    //Logging
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.7.2")
 
     val room_version = "2.6.1"
     //Room
