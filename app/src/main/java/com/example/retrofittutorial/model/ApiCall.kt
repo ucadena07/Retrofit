@@ -6,6 +6,9 @@ import retrofit2.http.Field
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.HeaderMap
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -51,5 +54,14 @@ interface ApiCall {
     @FormUrlEncoded
     @POST("apiCall")
     fun callFormDataMultipleFields(@FieldMap fields: Map<String,String>): Call<Person>
+
+    @Headers("Cache-Control: max-age=3600", "user-agent: abc")
+    @GET("apiCall")
+    fun callHeadersStatic(): Call<Person>
+
+    @GET("apiCall")
+    fun callHeadersDynamic(@Header("user-name") userName: String): Call<Person>
+    @GET("apiCall")
+    fun callHeadersDynamicMultiple(@HeaderMap headers: Map<String,String>): Call<Person>
 
 }
