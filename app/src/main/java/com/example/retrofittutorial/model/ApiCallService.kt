@@ -30,4 +30,7 @@ object ApiCallService {
     fun call() = api.callGet()
 
     //fun MultipleParamsCall = api.callMultipleParameters(hashMapOf(Pair("a","test"), Pair("b","test b")))
+    //fun byPass() = api.callUrlByPass()
+
+    //fun callDynamicUrl() = api.callUrlDynamic("https://example.com/user/info")
 }

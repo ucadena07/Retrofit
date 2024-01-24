@@ -54,6 +54,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
                 val raw = response.raw()
                 val errorBody = response.errorBody()
 
+
                 Log.d("NETWORK-BODY",body.toString())
                 Log.d("NETWORK-HEADER",header.toString())
                 Log.d("NETWORK-MESSAGE",message.toString())

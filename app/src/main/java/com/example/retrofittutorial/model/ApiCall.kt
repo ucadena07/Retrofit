@@ -3,8 +3,10 @@ package com.example.retrofittutorial.model
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
+import retrofit2.http.Url
 
 interface ApiCall {
     @GET("people/1")
@@ -23,4 +25,14 @@ interface ApiCall {
 
     @GET("apiCall")
     fun callMultipleParameters(@QueryMap params: Map<String,String>): Call<Person>
+
+    //This will error
+    @GET("https://example.com/user/info")
+    fun callUrlByPass(): Call<Person>
+
+    @GET
+    fun callUrlDynamic(@Url url: String) : Call<Person>
+
+    @GET("user/{info}")
+    fun callUrlPath(@Path("info") info: String): Call<Person>
 }
