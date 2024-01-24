@@ -46,9 +46,21 @@ class MainViewModel @Inject constructor() : ViewModel() {
                 call: Call<Person>,
                 response: Response<Person>
             ) {
-              val body = response.body()
+                val body = response.body()
+                val header = response.headers()
+                val message = response.message()
+                val code = response.code()
+                val isSuccessful = response.isSuccessful
+                val raw = response.raw()
+                val errorBody = response.errorBody()
 
-                Log.d("NETWORK",body.toString())
+                Log.d("NETWORK-BODY",body.toString())
+                Log.d("NETWORK-HEADER",header.toString())
+                Log.d("NETWORK-MESSAGE",message.toString())
+                Log.d("NETWORK-code",code.toString())
+                Log.d("NETWORK-isSuccessful",isSuccessful.toString())
+                Log.d("NETWORK-raw",raw.toString())
+                Log.d("NETWORK-errorBody",errorBody.toString())
 
 
             }

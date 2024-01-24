@@ -28,4 +28,6 @@ object ApiCallService {
         .create(ApiCall::class.java)
 
     fun call() = api.callGet()
+
+    //fun MultipleParamsCall = api.callMultipleParameters(hashMapOf(Pair("a","test"), Pair("b","test b")))
 }
