@@ -33,4 +33,5 @@ object ApiCallService {
     //fun byPass() = api.callUrlByPass()
 
     //fun callDynamicUrl() = api.callUrlDynamic("https://example.com/user/info")
+    //fun formPostMultiple() = api.callFormDataMultipleFields(hashMapOf(Pair("name","nigel")))
 }

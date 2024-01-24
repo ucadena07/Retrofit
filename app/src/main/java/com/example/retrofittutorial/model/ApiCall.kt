@@ -2,6 +2,9 @@ package com.example.retrofittutorial.model
 
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FieldMap
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -40,4 +43,13 @@ interface ApiCall {
     //Body
     @POST("apiCall")
     fun callPost(@Body person:Person) : Call<Person>
+
+    @FormUrlEncoded
+    @POST("apiCall")
+    fun callFormData(@Field("first_name") firstName: String, @Field("last_name") lastName: String): Call<Person>
+
+    @FormUrlEncoded
+    @POST("apiCall")
+    fun callFormDataMultipleFields(@FieldMap fields: Map<String,String>): Call<Person>
+
 }
