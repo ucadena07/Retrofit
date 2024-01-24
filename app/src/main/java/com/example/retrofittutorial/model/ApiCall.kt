@@ -1,6 +1,7 @@
 package com.example.retrofittutorial.model
 
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -35,4 +36,8 @@ interface ApiCall {
 
     @GET("user/{info}")
     fun callUrlPath(@Path("info") info: String): Call<Person>
+
+    //Body
+    @POST("apiCall")
+    fun callPost(@Body person:Person) : Call<Person>
 }
