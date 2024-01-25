@@ -3,6 +3,7 @@ package com.example.retrofittutorial.model
 import android.content.Context
 import android.util.Log
 import com.example.retrofittutorial.BuildConfig
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -31,7 +32,7 @@ object ApiCallService {
 //    }
 
     private var api2: ApiCall? = null
-    fun getApi(context: Context) : ApiCall{
+    private fun getApi(context: Context) : ApiCall{
         if(api2 == null){
             val client = OkHttpClient.Builder()
             val logging = HttpLoggingInterceptor()
@@ -46,6 +47,11 @@ object ApiCallService {
                     .build()
                 chain.proceed(newRequest)
             }
+
+            val cacheSize = 5 * 1024 * 1024L
+            val cache = Cache(context.cacheDir,cacheSize)
+            client.cache(cache)
+
             api2 = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

@@ -1,10 +1,12 @@
 package com.example.retrofittutorial.viewmodel
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.retrofittutorial.model.ApiCallResponse
@@ -26,8 +28,8 @@ import retrofit2.Response
 import javax.inject.Inject
 import javax.security.auth.callback.Callback
 
-@HiltViewModel
-class MainViewModel @Inject constructor() : ViewModel() {
+
+class MainViewModel(application: Application) : AndroidViewModel(application) {
     var job: Job? = null
     val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         GlobalScope.launch(Dispatchers.Main) {
@@ -41,12 +43,12 @@ class MainViewModel @Inject constructor() : ViewModel() {
     val loading: MutableState<Boolean> = mutableStateOf(true)
     val error = MutableLiveData<String?>()
 
-    fun fetchData(context: Context) {
+    fun fetchData() {
         Log.d("NETWORK","Fetching....")
         loading.value = true
 
 
-        val call = ApiCallService.call(context)
+        val call = ApiCallService.call(getApplication())
             call.enqueue(object : retrofit2.Callback<Person>{
             override fun onResponse(
                 call: Call<Person>,
@@ -89,9 +91,9 @@ class MainViewModel @Inject constructor() : ViewModel() {
         loading.value = false
     }
 
-    fun fetchDataSync(context: Context){
+    fun fetchDataSync(){
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            var response = ApiCallService.call(context).execute()
+            var response = ApiCallService.call(getApplication()).execute()
             withContext(Dispatchers.Main){
                 if(response.isSuccessful){
                     val body = response.body()
