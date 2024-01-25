@@ -14,6 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.retrofittutorial.model.TYPE_CATEGORY
 import com.example.retrofittutorial.ui.theme.RetrofitTutorialTheme
@@ -26,7 +27,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          val viewModel: MainViewModel by viewModels()
-         viewModel.fetchData()
+
+
         setContent {
             RetrofitTutorialTheme {
                 // A surface container using the 'background' color from the theme
@@ -34,6 +36,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    var context = LocalContext.current
+                    viewModel.fetchDataSync(context)
 //                    LazyColumn{
 //                        items(viewModel.apiResponse.value){
 //                            if(it.type == TYPE_CATEGORY){
@@ -57,6 +61,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
+
     Text(
         text = "Hello $name!",
         modifier = modifier

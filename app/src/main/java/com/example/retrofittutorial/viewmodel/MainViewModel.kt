@@ -1,8 +1,10 @@
 package com.example.retrofittutorial.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.retrofittutorial.model.ApiCallResponse
@@ -13,10 +15,12 @@ import com.example.retrofittutorial.model.TYPE_CATEGORY
 import com.example.retrofittutorial.model.TYPE_ITEM
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Response
 import javax.inject.Inject
@@ -37,11 +41,12 @@ class MainViewModel @Inject constructor() : ViewModel() {
     val loading: MutableState<Boolean> = mutableStateOf(true)
     val error = MutableLiveData<String?>()
 
-    fun fetchData() {
+    fun fetchData(context: Context) {
         Log.d("NETWORK","Fetching....")
         loading.value = true
 
-        ApiCallService.call().enqueue(object : retrofit2.Callback<Person>{
+
+        ApiCallService.call(context).enqueue(object : retrofit2.Callback<Person>{
             override fun onResponse(
                 call: Call<Person>,
                 response: Response<Person>
@@ -75,6 +80,35 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
         error.value = null
         loading.value = false
+    }
+
+    fun fetchDataSync(context: Context){
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            var response = ApiCallService.call(context).execute()
+            withContext(Dispatchers.Main){
+                if(response.isSuccessful){
+                    val body = response.body()
+                    val header = response.headers()
+                    val message = response.message()
+                    val code = response.code()
+                    val isSuccessful = response.isSuccessful
+                    val raw = response.raw()
+                    val errorBody = response.errorBody()
+
+
+                    Log.d("NETWORK-BODY",body.toString())
+                    Log.d("NETWORK-HEADER",header.toString())
+                    Log.d("NETWORK-MESSAGE",message.toString())
+                    Log.d("NETWORK-code",code.toString())
+                    Log.d("NETWORK-isSuccessful",isSuccessful.toString())
+                    Log.d("NETWORK-raw",raw.toString())
+                    Log.d("NETWORK-errorBody",errorBody.toString())
+                }else{
+                    onError(response.message())
+                }
+            }
+        }
+
     }
 
     private fun onError(message: String) {
