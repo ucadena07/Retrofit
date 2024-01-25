@@ -85,7 +85,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                onError(t.message.toString())
             }
         })
-        call.cancel()
+
 
         error.value = null
         loading.value = false
