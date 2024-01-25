@@ -46,7 +46,8 @@ class MainViewModel @Inject constructor() : ViewModel() {
         loading.value = true
 
 
-        ApiCallService.call(context).enqueue(object : retrofit2.Callback<Person>{
+        val call = ApiCallService.call(context)
+            call.enqueue(object : retrofit2.Callback<Person>{
             override fun onResponse(
                 call: Call<Person>,
                 response: Response<Person>
@@ -72,11 +73,17 @@ class MainViewModel @Inject constructor() : ViewModel() {
             }
 
             override fun onFailure(call: Call<Person>, t: Throwable) {
-                Log.d("NETWORK ERROR","${t.localizedMessage}")
+                if(call.isCanceled){
+                    Log.d("NETWORK CALL CANCELED","${t.localizedMessage}")
+                }else{
+                    Log.d("NETWORK ERROR","${t.localizedMessage}")
+                }
+
+
                onError(t.message.toString())
             }
-
         })
+        call.cancel()
 
         error.value = null
         loading.value = false

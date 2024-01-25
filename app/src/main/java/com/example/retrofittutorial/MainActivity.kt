@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     var context = LocalContext.current
-                    viewModel.fetchDataSync(context)
+                    viewModel.fetchData(context)
 //                    LazyColumn{
 //                        items(viewModel.apiResponse.value){
 //                            if(it.type == TYPE_CATEGORY){
