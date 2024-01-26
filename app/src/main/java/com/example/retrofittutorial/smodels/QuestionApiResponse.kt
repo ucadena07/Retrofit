@@ -1,5 +1,6 @@
 package com.example.retrofittutorial.smodels
 
+import android.text.Html
 import com.google.gson.annotations.SerializedName
 
 data class ResponseWrapper<T>(
@@ -15,3 +16,8 @@ data class Question(
     val date: Long?
 
 )
+
+fun convertTitle(title: String?) : String{
+    return Html.fromHtml(title, Html.FROM_HTML_MODE_LEGACY).toString()
+}
+

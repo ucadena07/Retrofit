@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.retrofittutorial.model.TYPE_CATEGORY
+import com.example.retrofittutorial.smodels.convertTitle
 import com.example.retrofittutorial.sviewmodel.QuestionsViewModel
 import com.example.retrofittutorial.ui.theme.RetrofitTutorialTheme
 import com.example.retrofittutorial.viewmodel.MainViewModel
@@ -41,7 +42,8 @@ class MainActivity : ComponentActivity() {
             RetrofitTutorialTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize().padding(10.dp),
+
                     color = MaterialTheme.colorScheme.background
                 ) {
 
@@ -50,9 +52,9 @@ class MainActivity : ComponentActivity() {
                             if(viewModel.loading.value){
                              LinearProgressIndicator()
                             }else {
-                                Card(modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp).height(25.dp)) {
-                                    Row {
-                                     Text(text = it.title!!)
+                                Card(modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp).height(75.dp)) {
+                                    Row(modifier = Modifier.padding(5.dp)) {
+                                     Text(text = convertTitle(it.title))
                                     }
                                 }
 
