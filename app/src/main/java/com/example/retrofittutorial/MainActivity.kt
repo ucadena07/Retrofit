@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -35,32 +36,43 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          val viewModel: QuestionsViewModel by viewModels()
-        viewModel.getQuestions()
+        viewModel.getNextPage()
 
 
         setContent {
             RetrofitTutorialTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize().padding(10.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(10.dp),
 
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-                    LazyColumn{
-                        items(viewModel.questionsResponse.value){
-                            if(viewModel.loading.value){
-                             LinearProgressIndicator()
-                            }else {
-                                Card(modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp).height(75.dp)) {
+                    val listState = rememberLazyListState()
+                    if(!listState.canScrollForward){
+                        viewModel.getNextPage()
+                    }
+                    if(viewModel.loading.value){
+                        LinearProgressIndicator()
+                    }else{
+                        LazyColumn(state = listState){
+                            items(viewModel.questionsResponse.value){
+                                Card(modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 5.dp)
+                                    .height(75.dp)) {
                                     Row(modifier = Modifier.padding(5.dp)) {
-                                     Text(text = convertTitle(it.title))
+                                        Text(text = convertTitle(it.title))
                                     }
                                 }
 
+
                             }
+
                         }
                     }
+
 
                 }
             }
